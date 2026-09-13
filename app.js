@@ -1,1 +1,6 @@
-(function(){'use strict';const app=document.getElementById('eviaApp'),anchor=document.getElementById('eviaAnchor'),menu=document.getElementById('menu'),panel=document.getElementById('panel');anchor.addEventListener('click',()=>{app.classList.toggle('is-open');if(!app.classList.contains('is-open'))panel.hidden=true});menu.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const labels={time:'Time on course',progress:'Progress',learning:'Learning / OTJ',skills:'Skills confidence',options:'More options'};panel.hidden=false;panel.innerHTML='<strong>'+labels[b.dataset.action]+'</strong><p>This is the Evia3.0 learner area. Course data and evidence workflows will connect here.</p>'});})();
+(function(){'use strict';
+const app=document.getElementById('eviaApp'),anchor=document.getElementById('eviaAnchor'),menu=document.getElementById('menu'),panel=document.getElementById('panel');
+anchor.addEventListener('click',()=>{app.classList.toggle('is-open');if(!app.classList.contains('is-open'))panel.hidden=true});
+menu.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const labels={time:'Time on course',progress:'Progress',learning:'Learning / OTJ',skills:'Skills confidence',options:'More options'};panel.hidden=false;panel.innerHTML='<strong>'+labels[b.dataset.action]+'</strong><p>This is the Evia3.0 learner area. Course data and evidence workflows will connect here.</p>'});
+if('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(()=>{});
+})();
