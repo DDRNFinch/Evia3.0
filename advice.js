@@ -2,6 +2,9 @@
 const app=document.getElementById('eviaApp');
 const anchor=document.getElementById('eviaAnchor');
 if(!app||!anchor)return;
+const style=document.createElement('style');
+style.textContent='.evia-advice{position:absolute;z-index:19;left:50%;top:calc(50% + clamp(88px,24vw,108px));transform:translateX(-50%);width:min(88vw,430px);padding:11px 14px;border:1px solid rgba(218,181,40,.18);border-radius:15px;background:rgba(255,249,218,.96);box-shadow:0 7px 20px rgba(30,45,50,.06);text-align:center;opacity:1;transition:top 900ms cubic-bezier(.22,1,.36,1),transform 900ms cubic-bezier(.22,1,.36,1),opacity .3s ease}.evia-advice b{display:block;margin-bottom:3px;font-size:.76rem;color:#806a16}.evia-advice span{display:block;color:#625d42;font-size:.81rem;line-height:1.38}.evia-app.is-open .evia-advice{top:calc(max(18px,env(safe-area-inset-top)) + 105px)}@media(max-width:420px){.evia-advice{width:calc(100vw - 28px);padding:10px 12px}.evia-advice span{font-size:.78rem}}';
+document.head.appendChild(style);
 const advice=document.createElement('div');
 advice.id='eviaAdvice';
 advice.className='evia-advice';
@@ -35,7 +38,7 @@ function update(){
  const body=content.textContent||'';
  if(!app.classList.contains('is-open')){set('Evia’s advice','Tap me and I’ll guide you through your evidence one step at a time.');return;}
  if(photoPrompt){set('Evia’s advice',tipFor(photoPrompt));return;}
- if(question){set('Evia’s advice', 'Answer in your own words. Explain what you did, how you did it and why, using the question to guide you.');return;}
+ if(question){set('Evia’s advice','Answer in your own words. Explain what you did, how you did it and why, using the question to guide you.');return;}
  if(/This duty is complete/.test(body)){set('Evia’s advice','This duty is complete. Choose another duty when you are ready.');return;}
  if(/All done\./.test(body)){set('Evia’s advice','That evidence is saved on your device. I’ll remember the KSBs you have already covered.');return;}
  if(/What do you want to work on today\?/.test(body)){set('Evia’s advice','Choose a duty and I’ll guide you through the evidence one step at a time.');return;}
