@@ -1,5 +1,5 @@
-const CACHE = 'evia3-v16';
-const ASSETS = ['./styles.css?v=15','./activity-tidy.css?v=15','./evia-task-flow.css?v=1','./avatar.js?v=15','./course.js?v=16','./evia-task-flow.js?v=1','./advice.js?v=15','./manifest.webmanifest?v=15','./icon-192.svg?v=16','./icon-512.svg?v=16'];
+const CACHE = 'evia3-v17';
+const ASSETS = ['./styles.css?v=15','./activity-tidy.css?v=15','./evia-task-flow.css?v=2','./avatar.js?v=15','./course.js?v=16','./evia-task-flow.js?v=3','./manifest.webmanifest?v=15','./icon-192.svg?v=16','./icon-512.svg?v=16'];
 self.addEventListener('install', event => { event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(ASSETS))); self.skipWaiting(); });
 self.addEventListener('activate', event => { event.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim())); });
 self.addEventListener('fetch', event => { const request=event.request; if(request.method!=='GET')return; const url=new URL(request.url); if(url.pathname.endsWith('/sw.js'))return; if(request.mode==='navigate'){event.respondWith(fetch(request).then(response=>{const copy=response.clone();caches.open(CACHE).then(cache=>cache.put('./index.html',copy));return response}).catch(()=>caches.match('./index.html')));return} event.respondWith(caches.match(request).then(cached=>cached||fetch(request).then(response=>{const copy=response.clone();caches.open(CACHE).then(cache=>cache.put(request,copy));return response}).catch(()=>cached)))});
