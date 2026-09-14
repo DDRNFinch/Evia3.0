@@ -5,5 +5,6 @@
 .activity-sheet .capture-heading{padding:7px 4px 10px;margin-bottom:10px}
 .activity-sheet .capture-heading b,.activity-sheet .capture-heading span{display:block;width:100%;overflow-wrap:anywhere;word-break:normal;white-space:normal}
 .activity-sheet .capture-card{margin-top:0}
-.evia-advice span{max-width:100%;margin:0 auto;overflow-wrap:anywhere;word-break:normal;white-space:normal}
+.evia-advice span{max-width:100%;margin:0 auto;overflow-wrap:normal;word-break:normal;white-space:normal}
+.evia-advice .letter{display:inline;transform:none}
 @media(max-width:420px){.evia-app.is-open .content{inset:202px 0 0}.evia-app.is-open .evia-advice{top:calc(max(18px,env(safe-area-inset-top)) + 101px);width:min(94%,380px)}}
