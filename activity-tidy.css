@@ -1,0 +1,9 @@
+.evia-app.is-open .evia-advice{top:calc(max(18px,env(safe-area-inset-top)) + 86px);width:min(92%,410px)}
+.evia-app.is-open .content{inset:172px 0 0}
+.activity-sheet{width:min(100%,500px);margin:0 auto}
+.activity-sheet .activity-heading,.activity-sheet .capture-heading,.activity-sheet .question-heading{width:100%;text-align:left;align-items:flex-start}
+.activity-sheet .capture-heading{padding:7px 4px 10px;margin-bottom:10px}
+.activity-sheet .capture-heading b,.activity-sheet .capture-heading span{display:block;width:100%}
+.activity-sheet .capture-card{margin-top:0}
+.evia-advice span{max-width:100%;margin:0 auto}
+@media(max-width:420px){.evia-app.is-open .content{inset:164px 0 0}.evia-app.is-open .evia-advice{top:calc(max(18px,env(safe-area-inset-top)) + 82px);width:min(94%,380px)}}
