@@ -2,7 +2,7 @@
   "name": "Evia — Learner Assistant",
   "short_name": "Evia",
   "description": "Evia learner evidence companion.",
-  "start_url": "./?v=1.6",
+  "start_url": "./?v=1.7",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
