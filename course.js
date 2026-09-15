@@ -30,21 +30,30 @@ window.EVIA_NAXOS={
         scanner.start().then(()=>status.textContent='Camera ready — scan the QR code.').catch(e=>finish(e));
       }catch(e){finish(e)}
     });
+  },
+  async importCourseImage(file){
+    if(!file)throw new Error('No QR image was selected.');
+    if(!file.type||!file.type.startsWith('image/'))throw new Error('Please choose an image containing a Naxos QR code.');
+    if(!window.QrScanner)await loadScanner();
+    if(!window.QrScanner)throw new Error('QR scanner could not be loaded.');
+    let result;
+    try{result=await window.QrScanner.scanImage(file,{returnDetailedScanResult:true});}
+    catch(e){throw new Error('No readable QR code was found in that image.');}
+    const raw=typeof result==='string'?result:result?.data;
+    if(!raw)throw new Error('No readable QR code was found in that image.');
+    return handlePayload(raw);
   }
 };
 async function loadScanner(){
   for(const source of QR_SOURCES){
     try{
       await loadScript(source.main);
-      if(window.QrScanner){
-        window.QrScanner.WORKER_PATH=source.worker;
-        return window.QrScanner;
-      }
+      if(window.QrScanner){window.QrScanner.WORKER_PATH=source.worker;return window.QrScanner;}
     }catch(e){}
   }
   throw new Error('QR scanner could not be loaded.');
 }
 function loadScript(src){return new Promise((resolve,reject)=>{const s=document.createElement('script');s.src=src;s.onload=resolve;s.onerror=()=>reject(new Error('QR scanner could not be loaded.'));document.head.appendChild(s)})}
-function injectPackage(url){return new Promise((resolve,reject)=>{const done=e=>{window.removeEventListener('NAXOS4_COURSE_PACKAGE_READY',ready);window.removeEventListener('NAXOS4_COURSE_PACKAGE_ERROR',error);e.type==='ok'?resolve(e.detail):reject(new Error(e.detail?.message||'Course package could not be loaded.'))};const ready=e=>done({type:'ok',detail:e.detail});const error=e=>done({type:'error',detail:e.detail});const s=document.createElement('script');s.src=url;s.onload=()=>{};s.onerror=()=>done({type:'error',detail:{message:'The Naxos course package could not be reached.'}});document.head.appendChild(s)})}
+function injectPackage(url){return new Promise((resolve,reject)=>{const done=e=>{window.removeEventListener('NAXOS4_COURSE_PACKAGE_READY',ready);window.removeEventListener('NAXOS4_COURSE_PACKAGE_ERROR',error);e.type==='ok'?resolve(e.detail):reject(new Error(e.detail?.message||'Course package could not be loaded.'))};const ready=e=>done({type:'ok',detail:e.detail});const error=e=>done({type:'error',detail:e.detail});const s=document.createElement('script');s.src=url;s.onload=()=>{};s.onerror=()=>done({type:'error',detail:{message:'The Naxos course package could not be reached.'}});window.addEventListener('NAXOS4_COURSE_PACKAGE_READY',ready);window.addEventListener('NAXOS4_COURSE_PACKAGE_ERROR',error);document.head.appendChild(s)})}
 async function handlePayload(raw){let u;try{u=new URL(raw)}catch{throw new Error('That is not a Naxos course QR code.')}if(u.protocol!=='naxos4:'||u.hostname!=='course')throw new Error('That QR code is not a Naxos course.');const packageUrl=u.searchParams.get('package');const courseId=u.searchParams.get('course');if(!packageUrl||!courseId)throw new Error('The Naxos course QR code is incomplete.');const p=new URL(packageUrl);if(p.protocol!=='https:'||!p.pathname.endsWith('/naxos-package.js'))throw new Error('The course package source is not trusted.');const pkg=await injectPackage(packageUrl);if(pkg.course.id!==courseId)throw new Error('The QR code and course package do not match.');return window.EVIA_NAXOS.addPackage(pkg)}
 })();
